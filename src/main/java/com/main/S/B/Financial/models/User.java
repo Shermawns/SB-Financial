@@ -28,7 +28,7 @@ public class User {
 
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
     private List<BankAccount> bank_account = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)

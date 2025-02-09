@@ -12,16 +12,16 @@ public class UserMapper {
 
     public UserResponse toResponse(User user){
         return new UserResponse(
+                user.getId(),
                 user.getName(),
-                user.getEmail(),
                 user.getAddress()
         );
     }
 
     public List<UserResponse> toListResponse (List<User> users){
         return users.stream().map(user -> new UserResponse(
+                user.getId(),
                 user.getName(),
-                user.getEmail(),
                 user.getAddress()
         )).collect(Collectors.toList());
     }

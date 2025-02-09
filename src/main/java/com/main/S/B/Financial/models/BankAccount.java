@@ -18,9 +18,9 @@ public class BankAccount {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User userId;
 
-    private long account_number;
+    private String account_number;
 
     private String agency;
 
@@ -40,18 +40,18 @@ public class BankAccount {
     }
 
     public User getUser() {
-        return user;
+        return userId;
     }
 
     public void setUser(User user) {
-        this.user = user;
+        this.userId = user;
     }
 
-    public long getAccount_number() {
+    public String getAccount_number() {
         return account_number;
     }
 
-    public void setAccount_number(long account_number) {
+    public void setAccount_number(String account_number) {
         this.account_number = account_number;
     }
 
