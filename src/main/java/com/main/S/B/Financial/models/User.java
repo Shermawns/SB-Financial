@@ -20,6 +20,8 @@ public class User {
 
     private String cpf;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
     private Address address;
 
     private String email;
