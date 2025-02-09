@@ -14,9 +14,6 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "address")
-    private User user;
-
     private String street;
 
     private long number;
@@ -33,14 +30,6 @@ public class Address {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public String getStreet() {
