@@ -1,0 +1,8 @@
+CREATE TABLE tb_address (
+    id BIGSERIAL PRIMARY KEY,
+    street VARCHAR(250) NOT NULL,
+    number BIGINT NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    state VARCHAR(100) NOT NULL,
+    zip_code VARCHAR(20) NOT NULL
+);
