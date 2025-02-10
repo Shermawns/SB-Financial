@@ -21,7 +21,7 @@ public class BankMapper {
     public BankResponse toResponse(BankAccount bankAccount){
         return new BankResponse(
                 bankAccount.getId(),
-                userMapper.toResponse(bankAccount.getUser()),
+                userMapper.toResponse(bankAccount.getUserId()),
                 bankAccount.getAccount_number(),
                 bankAccount.getAgency(),
                 bankAccount.getBalance(),
@@ -35,10 +35,8 @@ public class BankMapper {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         BankAccount bankAccount = new BankAccount();
-        bankAccount.setUser(user);
-        bankAccount.setAccount_number(bankAccountRequest.accountNumber());
+        bankAccount.setUserId(user);
         bankAccount.setAgency(bankAccountRequest.agency());
-        bankAccount.setBalance(bankAccountRequest.balance());
         bankAccount.setActive(bankAccountRequest.active());
         bankAccount.setAccountType(bankAccountRequest.accountType());
 

@@ -4,8 +4,6 @@ import com.main.S.B.Financial.controller.response.UserResponse;
 import com.main.S.B.Financial.mappers.UserMapper;
 import com.main.S.B.Financial.models.User;
 import com.main.S.B.Financial.services.UserService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

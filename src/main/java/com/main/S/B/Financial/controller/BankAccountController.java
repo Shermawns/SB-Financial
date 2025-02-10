@@ -7,6 +7,7 @@ import com.main.S.B.Financial.models.BankAccount;
 import com.main.S.B.Financial.models.User;
 import com.main.S.B.Financial.repositories.UserRepository;
 import com.main.S.B.Financial.services.BankAccountService;
+import com.main.S.B.Financial.utils.GenerateConfigs;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,18 +15,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping(value = "api/V1/bankAccount")
 public class BankAccountController {
 
     private final BankAccountService bankAccountService;
+    private final GenerateConfigs generateConfigs;
     private final UserRepository userRepository;
     private final BankMapper bankMapper;
 
-    public BankAccountController(BankAccountService bankAccountService, UserRepository userRepository, BankMapper bankMapper) {
+    public BankAccountController(BankAccountService bankAccountService, GenerateConfigs generateConfigs, UserRepository userRepository, BankMapper bankMapper) {
         this.bankAccountService = bankAccountService;
+        this.generateConfigs = generateConfigs;
         this.userRepository = userRepository;
         this.bankMapper = bankMapper;
     }
@@ -35,8 +38,10 @@ public class BankAccountController {
 
         BankAccount bankAccount = bankMapper.toDomain(bankRequest);
 
-        User user = userRepository.findById(bankAccount.getUser().getId()).orElseThrow();
+        User user = userRepository.findById(bankAccount.getUserId().getId()).orElseThrow();
 
+        bankAccount.setAccount_number(generateConfigs.generateNumberAccount());
+        bankAccount.setBalance(BigDecimal.valueOf(0));
 
         BankAccount result = bankAccountService.save(bankAccount);
 
