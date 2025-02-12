@@ -1,16 +1,16 @@
 package com.main.S.B.Financial.models;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.main.S.B.Financial.models.enums.UserRole;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-@AllArgsConstructor
 @Entity
 @Table(name = "tb_users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +28,7 @@ public class User {
 
     private String password;
 
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<BankAccount> bank_account = new ArrayList<>();
 
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
@@ -39,6 +38,18 @@ public class User {
     private UserRole role = UserRole.ROLE_CLIENT;
 
     public User() {
+    }
+
+    public User(Long id, String name, String cpf, Address address, String email, String password, List<BankAccount> bank_account, List<CreditCard> creditCards, UserRole role) {
+        this.id = id;
+        this.name = name;
+        this.cpf = cpf;
+        this.address = address;
+        this.email = email;
+        this.password = password;
+        this.bank_account = bank_account;
+        this.creditCards = creditCards;
+        this.role = role;
     }
 
 
@@ -82,8 +93,39 @@ public class User {
         this.email = email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (this.role == UserRole.ROLE_ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_CLIENT"));
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void setPassword(String password) {
@@ -106,5 +148,6 @@ public class User {
     public List<CreditCard> getCreditCards() {
         return creditCards;
     }
+
 
 }

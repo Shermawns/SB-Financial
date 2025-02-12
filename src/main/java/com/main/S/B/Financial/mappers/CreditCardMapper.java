@@ -1,6 +1,5 @@
 package com.main.S.B.Financial.mappers;
 
-import com.main.S.B.Financial.controller.requests.CreditCardRequest;
 import com.main.S.B.Financial.controller.response.CreditCardResponse;
 import com.main.S.B.Financial.models.CreditCard;
 import org.springframework.stereotype.Component;

@@ -34,17 +34,20 @@ public class BankAccountController {
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<BankResponse> create(@RequestBody BankRequest bankRequest){
+    public ResponseEntity<BankResponse> create(@RequestBody BankRequest bankRequest) {
 
         BankAccount bankAccount = bankMapper.toDomain(bankRequest);
 
-        User user = userRepository.findById(bankAccount.getUserId().getId()).orElseThrow();
+        User user = userRepository.findById(bankAccount.getUserId().getId())
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + bankAccount.getUserId().getId()));
 
         bankAccount.setAccount_number(generateConfigs.generateNumberAccount());
+
         bankAccount.setBalance(BigDecimal.valueOf(0));
 
         BankAccount result = bankAccountService.save(bankAccount);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(bankMapper.toResponse(result));
     }
+
 }

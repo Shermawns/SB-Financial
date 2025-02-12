@@ -12,6 +12,7 @@ import com.main.S.B.Financial.services.UserService;
 import com.main.S.B.Financial.utils.GenerateConfigs;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,16 +40,22 @@ public class CreditCardController {
 
 
     @PostMapping(value = "/create")
-    public ResponseEntity<CreditCardResponse> create(@RequestBody CreditCardRequest creditCardRequest){
+    public ResponseEntity<CreditCardResponse> create(@RequestBody CreditCardRequest creditCardRequest, @AuthenticationPrincipal User user) {
 
-        BankAccount bankAccount = bankAccountService.findById(creditCardRequest.bank_account())
-                .orElseThrow();
+        if (user.getBank_account() == null || user.getBank_account().isEmpty()) {
+            throw new RuntimeException("The user doesn't have any bank account.");
+        }
 
-        User user = userService.findById(creditCardRequest.userId())
-                .orElseThrow();
+        BankAccount bankAccount = bankAccountService.findById(creditCardRequest.bankId())
+                .orElseThrow(() -> new RuntimeException("Bank Account not found."));
+
+
+        User user1 = userService.findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("The user doesn't exist."));
+
 
         CreditCard newCreditCard = new CreditCard();
-        newCreditCard.setUserId(user);
+        newCreditCard.setUserId(user1);
         newCreditCard.setBankId(bankAccount);
         newCreditCard.setInvoice(BigDecimal.valueOf(0));
         newCreditCard.setMinimum_payment(BigDecimal.valueOf(0));
@@ -57,8 +64,10 @@ public class CreditCardController {
         newCreditCard.setCvv(generateConfigs.generateCvv());
         newCreditCard.setCredit_limit(BigDecimal.valueOf(100));
 
-        CreditCard creditCard1 = creditCardService.save(newCreditCard);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(creditCardMapper.toResponse(creditCard1));
+        CreditCard savedCreditCard = creditCardService.save(newCreditCard);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(creditCardMapper.toResponse(savedCreditCard));
     }
+
 }
