@@ -10,6 +10,7 @@ import com.main.S.B.Financial.services.BankAccountService;
 import com.main.S.B.Financial.utils.GenerateConfigs;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,14 +35,18 @@ public class BankAccountController {
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<BankResponse> create(@RequestBody BankRequest bankRequest) {
+    public ResponseEntity<BankResponse> create(@AuthenticationPrincipal User user , @RequestBody BankRequest bankRequest) {
 
         BankAccount bankAccount = bankMapper.toDomain(bankRequest);
 
-        User user = userRepository.findById(bankAccount.getUserId().getId())
+        User user1 = userRepository.findById(user.getId())
                 .orElseThrow(() -> new RuntimeException("User not found with ID: " + bankAccount.getUserId().getId()));
 
         bankAccount.setAccount_number(generateConfigs.generateNumberAccount());
+
+        bankAccount.setUserId(user1);
+
+        bankAccount.setActive(true);
 
         bankAccount.setBalance(BigDecimal.valueOf(0));
 

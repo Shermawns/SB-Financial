@@ -8,6 +8,7 @@ import com.main.S.B.Financial.mappers.UserMapper;
 import com.main.S.B.Financial.models.User;
 import com.main.S.B.Financial.repositories.UserRepository;
 import com.main.S.B.Financial.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/register")
-    public ResponseEntity<UserResponse> create(@Validated @RequestBody User user) {
+    public ResponseEntity<UserResponse> create(@Valid @RequestBody User user) {
         if (this.userRepository.findByEmail(user.getEmail()) != null)
             return ResponseEntity.badRequest().build();
 
@@ -58,7 +59,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Validated LoginRequest data) {
+    public ResponseEntity login(@RequestBody @Valid LoginRequest data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
         var token = tokenService.generateToken((User)auth.getPrincipal());

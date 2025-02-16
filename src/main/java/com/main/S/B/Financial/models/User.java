@@ -1,6 +1,8 @@
 package com.main.S.B.Financial.models;
 import com.main.S.B.Financial.models.enums.UserRole;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,12 +20,14 @@ public class User implements UserDetails {
 
     private String name;
 
+    @CPF(message = "Invalid CPF. Please enter a valid CPF following the format XXX.XXX.XXX-XX.")
     private String cpf;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
 
+    @Email(message = "Invalid email address. Please enter a valid email in the format example@domain.com.")
     private String email;
 
     private String password;

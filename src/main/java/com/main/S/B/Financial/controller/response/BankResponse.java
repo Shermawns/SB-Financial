@@ -4,7 +4,7 @@ import com.main.S.B.Financial.models.enums.AccountType;
 import java.math.BigDecimal;
 
 public record BankResponse(
-        Long id,
+        Long bankId,
         UserResponse owner,
         String accountNumber,
         String agency,

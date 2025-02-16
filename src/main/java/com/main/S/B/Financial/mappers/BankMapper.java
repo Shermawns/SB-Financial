@@ -31,13 +31,9 @@ public class BankMapper {
     }
 
     public BankAccount toDomain(BankRequest bankAccountRequest) {
-        User user = userRepository.findById(bankAccountRequest.userId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
 
         BankAccount bankAccount = new BankAccount();
-        bankAccount.setUserId(user);
         bankAccount.setAgency(bankAccountRequest.agency());
-        bankAccount.setActive(bankAccountRequest.active());
         bankAccount.setAccountType(bankAccountRequest.accountType());
 
         return bankAccount;
