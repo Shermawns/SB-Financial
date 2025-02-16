@@ -1,6 +1,8 @@
 package com.main.S.B.Financial.mappers;
 
+import com.main.S.B.Financial.controller.response.PixResponse;
 import com.main.S.B.Financial.controller.response.UserResponse;
+import com.main.S.B.Financial.models.PixKey;
 import com.main.S.B.Financial.models.User;
 import org.springframework.stereotype.Component;
 
@@ -25,4 +27,5 @@ public class UserMapper {
                 user.getAddress()
         )).collect(Collectors.toList());
     }
+
 }

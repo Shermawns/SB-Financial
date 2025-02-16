@@ -32,6 +32,9 @@ public class BankAccount {
     @OneToMany(mappedBy = "bankId", cascade = CascadeType.ALL)
     private List<CreditCard> creditCards = new ArrayList<>();
 
+    @OneToMany(mappedBy = "bankAccount", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PixKey> pixKeys;
+
     private BigDecimal balance;
 
     private boolean active;
@@ -104,4 +107,7 @@ public class BankAccount {
         return creditCards;
     }
 
+    public List<PixKey> getPixKeys() {
+        return pixKeys;
+    }
 }

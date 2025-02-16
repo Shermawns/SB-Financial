@@ -2,6 +2,10 @@ package com.main.S.B.Financial.models;
 import com.main.S.B.Financial.models.enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+
 @Entity
 @Table(name = "tb_users")
 public class User implements UserDetails {
@@ -35,6 +40,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<BankAccount> bank_account = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PixKey> pixKeys;
+
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)
     private List<CreditCard> creditCards = new ArrayList<>();
 
@@ -44,7 +52,7 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(Long id, String name, String cpf, Address address, String email, String password, List<BankAccount> bank_account, List<CreditCard> creditCards, UserRole role) {
+    public User(Long id, String name, String cpf, Address address, String email, String password, List<BankAccount> bank_account, List<PixKey> pixKeys, List<CreditCard> creditCards, UserRole role) {
         this.id = id;
         this.name = name;
         this.cpf = cpf;
@@ -52,10 +60,10 @@ public class User implements UserDetails {
         this.email = email;
         this.password = password;
         this.bank_account = bank_account;
+        this.pixKeys = pixKeys;
         this.creditCards = creditCards;
         this.role = role;
     }
-
 
     public Long getId() {
         return id;
@@ -153,5 +161,7 @@ public class User implements UserDetails {
         return creditCards;
     }
 
-
+    public List<PixKey> getPixKeys() {
+        return pixKeys;
+    }
 }

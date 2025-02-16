@@ -3,8 +3,10 @@ package com.main.S.B.Financial.controller;
 import com.main.S.B.Financial.config.TokenService;
 import com.main.S.B.Financial.controller.requests.LoginRequest;
 import com.main.S.B.Financial.controller.response.LoginResponse;
+import com.main.S.B.Financial.controller.response.PixResponse;
 import com.main.S.B.Financial.controller.response.UserResponse;
 import com.main.S.B.Financial.mappers.UserMapper;
+import com.main.S.B.Financial.models.PixKey;
 import com.main.S.B.Financial.models.User;
 import com.main.S.B.Financial.repositories.UserRepository;
 import com.main.S.B.Financial.services.UserService;
@@ -51,6 +53,7 @@ public class UserController {
                 user.getEmail(),
                 encryptedPassword,
                 user.getBank_account(),
+                user.getPixKeys(),
                 user.getCreditCards(),
                 user.getRole()
         );
@@ -73,4 +76,5 @@ public class UserController {
 
         return ResponseEntity.ok().body(userMapper.toListResponse(list));
     }
+
 }

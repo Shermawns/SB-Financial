@@ -1,5 +1,6 @@
 package com.main.S.B.Financial.services;
 
+import com.main.S.B.Financial.models.PixKey;
 import com.main.S.B.Financial.models.User;
 import com.main.S.B.Financial.repositories.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
