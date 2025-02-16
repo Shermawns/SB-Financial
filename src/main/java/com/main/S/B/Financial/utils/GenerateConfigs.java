@@ -7,6 +7,8 @@ import java.util.Random;
 @Configuration
 public class GenerateConfigs {
 
+    private static final String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
     public String generateCardNumber() {
         var random = new Random();
         StringBuilder numberAccount = new StringBuilder("0");
@@ -49,6 +51,19 @@ public class GenerateConfigs {
         }
 
         return Integer.parseInt(numberAccount.toString());
+    }
+
+    public String generateRandomPixKey(){
+        StringBuilder stringBuilder = new StringBuilder();
+        Random random = new Random();
+
+        for (int i = 0; i < 32; i++){
+            int index = random.nextInt(characters.length());
+            stringBuilder.append(characters.charAt(index));
+        }
+
+        return stringBuilder.toString();
+
     }
 
 }
