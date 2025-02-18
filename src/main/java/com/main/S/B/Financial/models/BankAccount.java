@@ -35,6 +35,14 @@ public class BankAccount {
     @OneToMany(mappedBy = "bankAccount", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PixKey> pixKeys;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "senderAccount", cascade = CascadeType.ALL)
+    private List<Transaction> sentTransactions = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "recipientAccount", cascade = CascadeType.ALL)
+    private List<Transaction> receivedTransactions = new ArrayList<>();
+
     private BigDecimal balance;
 
     private boolean active;

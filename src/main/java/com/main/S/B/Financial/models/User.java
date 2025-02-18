@@ -37,6 +37,13 @@ public class User implements UserDetails {
 
     private String password;
 
+
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+    private List<Transaction> sentTransactions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.ALL)
+    private List<Transaction> receivedTransactions = new ArrayList<>();
+
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<BankAccount> bank_account = new ArrayList<>();
 
